@@ -1,5 +1,6 @@
 import io
-
+import requests
+from flask import request
 
 from PIL import Image
 from torchvision import models
@@ -30,3 +31,12 @@ def format_class_name(class_name):
     class_name = class_name.replace('_', ' ')
     class_name = class_name.title()
     return class_name
+
+
+# define a loader callback for the API to fetch the relevant data and
+# preprocessor callbacks to map to a format expected by the model
+def url_loader():
+    """Load image from URL, and preprocess for densenet."""
+    url = request.args.get('url')  # read image URL as a request URL param
+    response = requests.get(url)  # make request to static image file
+    return response.content
