@@ -1,6 +1,8 @@
 import json
 import os
+from io import BytesIO
 
+from PIL import Image
 from torchvision import models
 from flask import Flask, jsonify, request, redirect, render_template
 from commons import format_class_name
@@ -13,10 +15,11 @@ model.eval()
 
 
 @app.route('/predict/', methods=['POST', 'GET'])
-def upload_file():
+def predict_image():
     if request.method == 'POST':
         if 'file' not in request.files:
             return redirect(request.url)
+        # url = Image.open(BytesIO(response.content))
         file = request.files.get('file')
         if not file:
             return
